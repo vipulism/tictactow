@@ -30,6 +30,7 @@ function App() {
   const [logs, setLogs] = useState(default_logs);
   const [gameOver, setGameOver] = useState(isGameOver);
   const [game, setGame] = useState(defaultGame);
+
   const onClicked = (row:number, col:number, player:Players) => {
   
       if(gameOver) return;
@@ -40,9 +41,9 @@ function App() {
         return newGame;
       });
 
-      defaultGame[row][col] = player;
+      game[row][col] = player;
       setLogs(oldLog => {
-        const newLogs = { X:[...oldLog.X], O:[...oldLog.O]}
+        const newLogs = { X:[...oldLog.X.map(itm => [...itm])], O:[...oldLog.O].map(itm => [...itm])}
         newLogs[currentPlayer].push([row, col]);
         return newLogs;
       });
