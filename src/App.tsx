@@ -41,7 +41,6 @@ function App() {
         return newGame;
       });
 
-      game[row][col] = player;
       setLogs(oldLog => {
         const newLogs = { X:[...oldLog.X.map(itm => [...itm])], O:[...oldLog.O].map(itm => [...itm])}
         newLogs[currentPlayer].push([row, col]);
