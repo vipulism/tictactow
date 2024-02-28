@@ -6,9 +6,12 @@ interface Props {
 	status:GameRow[],
 	onSelection(row:number, col:number, player:Players):void;
 	currentPlayer:Players;
+	gameOver:boolean;
 }
 
 export default function Game(prop:Props){
+
+	const gameStatus = prop.gameOver;
    
 	const clicked = (row:number, col:number, player:Players) => {
 		prop.onSelection(row,col,player);
@@ -17,21 +20,21 @@ export default function Game(prop:Props){
 
         return (
         <li  key={'row'+rowIndex}>
-					<ul>
-						{ 
-							row.map((col, colIndex) => {
-								return (
-									<li key={'col'+colIndex}>
-										<button 
-											disabled={col !== null}
-											onClick={() => clicked(rowIndex, colIndex, prop.currentPlayer)}>
-											{col || ''}
-										</button>
-									</li>
-								)
-							})
-						}
-					</ul>
+			<ul>
+				{ 
+					row.map((col, colIndex) => {
+						return (
+							<li key={'col'+colIndex}>
+								<button 
+									disabled={col !== null || gameStatus}
+									onClick={() => clicked(rowIndex, colIndex, prop.currentPlayer)}>
+									{col || ''}
+								</button>
+							</li>
+						)
+					})
+				}
+			</ul>
         </li>
         );
 

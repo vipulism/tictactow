@@ -41,19 +41,19 @@ function App() {
         return newGame;
       });
 
+
       setLogs(oldLog => {
         const newLogs = { X:[...oldLog.X.map(itm => [...itm])], O:[...oldLog.O].map(itm => [...itm])}
         newLogs[currentPlayer].push([row, col]);
         return newLogs;
       });
 
+
       setCurrentPlayer((prevPlayer) => {
         const p = prevPlayer === 'X' ? 'O' : 'X';
         console.log('set new current player', p);
         return p;
       });
-      
-      console.log('current player', currentPlayer);
       
       Winners.forEach(combos => {
         if(logs[currentPlayer].length >= 3 && !gameOver){
@@ -63,15 +63,16 @@ function App() {
             setGameOver(state => !state);
           }
         }
-      })
+      });
   }
 
 
   return (
     <div className='container w-500'>
-        <Header />
+        <Header activePlayer={currentPlayer} />
         { gameOver && <h1>GameOver</h1>}
         <Game 
+            gameOver={gameOver}
             currentPlayer={currentPlayer}
             status={game}
             onSelection={onClicked} />
