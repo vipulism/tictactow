@@ -54,6 +54,8 @@ function App() {
         console.log('set new current player', p);
         return p;
       });
+
+      console.log('current player', currentPlayer); // why this is not updated here ?
       
       Winners.forEach(combos => {
         if(logs[currentPlayer].length >= 3 && !gameOver){
