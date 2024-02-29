@@ -6,12 +6,12 @@ interface Props {
 	status:GameRow[],
 	onSelection(row:number, col:number, player:Players):void;
 	currentPlayer:Players;
-	gameOver:boolean;
+	gameOver: null | Players;
 }
 
 export default function Game(prop:Props){
 
-	const gameStatus = prop.gameOver;
+	const gameStatus = !!prop.gameOver;
    
 	const clicked = (row:number, col:number, player:Players) => {
 		prop.onSelection(row,col,player);

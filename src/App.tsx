@@ -21,7 +21,7 @@ interface Logs {
 }
 
 const activePlayer = 'X' as Players;
-const isGameOver = false;
+const isGameOver:Players | null = null;
 
 function App() {
 
@@ -34,53 +34,49 @@ function App() {
   const onClicked = (row:number, col:number, player:Players) => {
   
       if(gameOver) return;
-
+      
       setGame(prevGame => {
         const newGame = [...prevGame.map(row => [...row])];
         newGame[row][col] = player;
         return newGame;
       });
 
-
       setLogs(oldLog => {
-        const newLogs = { X:[...oldLog.X.map(itm => [...itm])], O:[...oldLog.O].map(itm => [...itm])}
+        const newLogs = { 
+          X:[...oldLog.X.map(itm => [...itm])], 
+          O:[...oldLog.O.map(itm => [...itm])]
+        };
+
         newLogs[currentPlayer].push([row, col]);
+
+        Winners.forEach(combos => {
+          if(newLogs[currentPlayer].length >= 3 && !gameOver){
+             const isWinner = combos.every(combo => newLogs[currentPlayer].some(itm => itm[0] === combo[0] && itm[1] === combo[1]))
+            if(isWinner){
+              setGameOver(() => currentPlayer === 'X' ? 'O' : 'X');
+            }
+              
+          }
+        });
         return newLogs;
       });
 
-
       setCurrentPlayer((prevPlayer) => {
         const p = prevPlayer === 'X' ? 'O' : 'X';
-        console.log('set new current player', p);
         return p;
-      });
-
-      console.log('current player', currentPlayer); // why this is not updated here ?
-      
-      Winners.forEach(combos => {
-        if(logs[currentPlayer].length >= 3 && !gameOver){
-          const isWinner = combos.every(combo => logs[currentPlayer].some(itm => itm[0] === combo[0] && itm[1] === combo[1]))
-          if(isWinner){
-            console.log('Game Overrrrrrrrrrrr ' + currentPlayer + ' winner' );
-            setGameOver(state => !state);
-          }
-        }
       });
   }
 
-
   return (
     <div className='container w-500'>
-        <Header activePlayer={currentPlayer} />
+        <Header gameOver={gameOver} activePlayer={currentPlayer} />
         { gameOver && <h1>GameOver</h1>}
+        { gameOver && `${gameOver} is Looser`}
         <Game 
             gameOver={gameOver}
             currentPlayer={currentPlayer}
             status={game}
             onSelection={onClicked} />
-          x:{JSON.stringify(logs.X)}
-          <br />
-          o:{JSON.stringify(logs.O)}
     </div>
   )
 }
